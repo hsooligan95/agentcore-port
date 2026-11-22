@@ -1,0 +1,73 @@
+# UNTESTED AGAINST AWS — never deployed. Included so the cloud shape of
+# this pattern is reviewable: one AgentCore Runtime (HTTP protocol,
+# container from ECR), one Memory, and a least-privilege execution role.
+# Deploying it requires an AWS sandbox account, an ARM64 image pushed to
+# the ECR repository below, and a human decision to spend money. None of
+# that has happened; local conformance (see ../conformance/) is the only
+# proven claim in this repo.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: AgentCorePort — factory-floor-agent on Bedrock AgentCore (UNTESTED)
+
+Parameters:
+  ImageTag:
+    Type: String
+    Default: latest
+    Description: Tag of the ARM64 agent image in the ECR repository below.
+
+Resources:
+  AgentImageRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: agentcore-port/factory-floor-agent
+      ImageTagMutability: IMMUTABLE
+
+  RuntimeExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: bedrock-agentcore.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: agentcore-port-least-privilege
+          PolicyDocument: # kept in sync with execution-role-policy.json
+            Version: "2012-10-17"
+            Statement:
+              - Sid: RuntimeLogs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: "arn:aws:logs:*:*:log-group:/aws/bedrock-agentcore/runtimes/*"
+              - Sid: MemoryEventsForOwnMemoryOnly
+                Effect: Allow
+                Action: [bedrock-agentcore:CreateEvent, bedrock-agentcore:ListEvents]
+                Resource: !GetAtt AgentMemory.Arn
+
+  AgentMemory:
+    Type: AWS::BedrockAgentCore::Memory
+    Properties:
+      Name: factory_floor_qa_memory
+      Description: Session events for the factory-floor QA agent.
+      EventExpiryDuration: 30
+
+  AgentRuntime:
+    Type: AWS::BedrockAgentCore::Runtime
+    Properties:
+      AgentRuntimeName: factory_floor_qa_agent
+      Description: factory-floor-agent served through the AgentCore Runtime HTTP contract.
+      RoleArn: !GetAtt RuntimeExecutionRole.Arn
+      AgentRuntimeArtifact:
+        ContainerConfiguration:
+          ContainerUri: !Sub "${AgentImageRepository.RepositoryUri}:${ImageTag}"
+      NetworkConfiguration:
+        NetworkMode: PUBLIC
+      ProtocolConfiguration:
+        ServerProtocol: HTTP
+
+Outputs:
+  RuntimeArn:
+    Value: !GetAtt AgentRuntime.AgentRuntimeArn
+  MemoryId:
+    Value: !GetAtt AgentMemory.MemoryId

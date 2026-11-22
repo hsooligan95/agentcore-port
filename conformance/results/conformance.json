@@ -1,0 +1,137 @@
+{
+  "trace_id": "trace-conformance-agentcore-port",
+  "cases": 18,
+  "identical": 18,
+  "divergences": [],
+  "direct_passed": 18,
+  "served_passed": 18,
+  "trace_events_emitted": 72,
+  "rows": [
+    {
+      "id": "state-graph",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "reducers",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "checkpointing-enables",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "time-travel",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "interrupts",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "memory-kinds",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "chunking-knobs",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "chunk-metadata",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "embeddings-cosine",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "hybrid-search",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "top-k",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "groundedness-def",
+      "kind": "answerable",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-cooking",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-weather",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-stock",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-sports",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-travel",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    },
+    {
+      "id": "abstain-bike",
+      "kind": "abstention",
+      "identical": true,
+      "direct_pass": true,
+      "served_pass": true
+    }
+  ]
+}
